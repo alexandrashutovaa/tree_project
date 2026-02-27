@@ -14,7 +14,7 @@ POI::POI(float x_, float y_, float r_, char t_){
 
 POI::~POI() {};
 
-void POI::produceRequest(cell* producer, cell* zero) {
+void POI::produceRequest(cell* producer, cell* zeroCell) {
     if (amount <= 0) return;  //ресурс кончился
 
     DATA d = producer->getData();
@@ -27,7 +27,7 @@ void POI::produceRequest(cell* producer, cell* zero) {
         amount -= 1;  // ресурс уменьшается
 
         // отдаем ресурс zero
-        zero* root = (zero*)zero;
+        zero* root = (zero*)zeroCell;
         if (type == 'L') {
             root->addResource('a', 1);
         }

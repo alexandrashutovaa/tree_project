@@ -11,7 +11,7 @@ public:
 
     POI(float x_, float y_, float r_, char t_);
     virtual ~POI();
-    void produceRequest(cell* producer, cell* zero);
+    void produceRequest(cell* producer, cell* zeroCell);
 };
 
 // глобальные массивы (доступны везде)

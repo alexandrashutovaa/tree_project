@@ -32,3 +32,4 @@ void producer::tick() {
     produce();    // добываем ресурсы
     cell::tick(); // дети (если есть)
 }
+void producer::grow() {}

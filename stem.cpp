@@ -4,11 +4,9 @@
 #include <iostream>
 
 stem::stem(float x, float y, cell* parent) : cell(x, y, parent) {
-    std::cout << "Stem created at (" << x << "," << y << ")\n";
 }
 
 stem::~stem() {
-    std::cout << "Stem at (" << getX() << "," << getY() << ") destroyed\n";
 }
 
 void stem::grow() {
@@ -26,3 +24,4 @@ void stem::tick() {
     grow();
     cell::tick();  // дети
 }
+void stem::produce(){}

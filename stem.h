@@ -11,6 +11,7 @@ public:
 
 protected:
     void grow();
+    void produce();
 };
 
 #endif

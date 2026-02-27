@@ -1,7 +1,5 @@
 #include "zero.h"
 #include "stem.h"
-#include "leaf.h"
-#include "roots.h"
 #include "cell.h"
 #include <iostream>
 

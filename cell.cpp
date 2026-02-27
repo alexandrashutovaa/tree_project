@@ -107,6 +107,17 @@ bool cell::isPositionValid(float new_x, float new_y) { //проверим что родитель н
     return true;  // место свободно!
 }
 
+void cell::tick() {
+    if (!alive) return;
+    for (int i = 0; i < child_count; ++i) {
+        if (children[i]) {
+            children[i]->tick();
+        }
+    }
+    produce();
+    grow();
+}
+
 
 
 //не понадобилось. но было в начальных версиях проекта. может понадобится потом, если развивать.

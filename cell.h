@@ -46,7 +46,6 @@ public:
 	DATA getData();
 	//void task();
 	void tick();
-	void send();
 	void die();
 	void get(unsigned int e, unsigned int w);
 	bool isAlive();
@@ -54,8 +53,8 @@ public:
 	cell* getRoot(); //находит zero
 
 protected:
-	virtual void grow();
-	virtual void produce();
+	virtual void grow() = 0;
+	virtual void produce() = 0;
 	bool createChild(float child_x, float child_y, CellType type);
 	bool isPositionValid(float new_x, float new_y);
 

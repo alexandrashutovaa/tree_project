@@ -13,7 +13,6 @@ public:
 
     bool spend(float neededE, float neededW);
     void tick();
-    DATA getData();
     void addResource(char type, float amount); //тк у нас значения энергии и воды приватные, чтобы продюсер мог добавлять нужен этот метод
 
 
