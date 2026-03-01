@@ -1,12 +1,23 @@
 #include "cell.hpp"
 #include "producer.hpp"
 
+#include <chrono>
+#include <random>
+#include <vector>
+
+float Random() {
+	std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> distrib(0, 2000);
+    return 0.001*(distrib(gen)-1000);
+}
+
 cell::cell(Coords coords_, cell* parent_) { //�����������, ��� ��� ������
     alive = true;
     coords = coords_;
     parent = parent_;
     
-    if ( !parent )
+    if ( parent )
         root = parent->getData().root;
     else
         root = this;
@@ -26,11 +37,6 @@ DATA cell::getData() {
     data.root = this->root;
     data.children = this->children;
     return data;
-}
-
-void cell::tick() {
-    for (unsigned int i=0; i < this->children.size(); i++)
-        children[i]->tick();
 }
 
 /*

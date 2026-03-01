@@ -1,17 +1,11 @@
 #include "all-cells.hpp"
 #include "POI.hpp"
 
-// #include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
-// #include <vector>
+#include <vector>
 #include <string>
 
-int main() {
-    std::cout << "test" << std::endl;
-    return 0;
-}
-
-/*
 void drawGrid(sf::RenderWindow* window, float scale) {
 
     sf::VertexArray grid(sf::Lines);
@@ -58,43 +52,48 @@ int main()
 
     // window setup
 
-    sf::RenderWindow window(sf::VideoMode(1000, 1000), "Cells & trees");
-    const unsigned int FPS = 120;
-    window.setFramerateLimit(FPS);
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "Cells & trees");
+    window.setFramerateLimit(60);
 
     sf::Image icon;
-    if (!icon.loadFromFile("icon.png"))
-        return EXIT_FAILURE;
-    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    if ( icon.loadFromFile("icon.png") )
+        window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
-    const sf::Time TimePerTick = sf::seconds(1.f / 20.f); // 1 second / X ticks
+    const sf::Time TimePerTick = sf::seconds(1.f / 10.f); // 1 second / X ticks
 
-    sf::Font font;
-    if (!font.loadFromFile("arialmt.ttf"))
-        return EXIT_FAILURE;
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(50);
-    text.setFillColor(sf::Color::White);
-    text.setPosition(100.f, 100.f);
+    // sf::Font font;
+    // if (!font.loadFromFile("arialmt.ttf"))
+    //     return EXIT_FAILURE;
+    // sf::Text text;
+    // text.setFont(font);
+    // text.setCharacterSize(50);
+    // text.setFillColor(sf::Color::White);
+    // text.setPosition(100.f, 100.f);
 
-    float scale = 120; // pixels per length unit
+    float scale = 60; // pixels per length unit
+    unsigned int TickNumber = 0;
 
-    // 2D game "scene" setup
+    std::vector<POI*> lights;
+    for ( unsigned int i=0; i<10; i++ ) {
+        POI* tmp = new POI(
+            {10*Random(), 10*Random()}, 2, 'e'
+        );
+        lights.push_back(tmp);
+    }
+    std::vector<POI*> lakes;
+    for ( unsigned int i=0; i<10; i++ ) {
+        POI* tmp = new POI(
+            {10*Random(), 10*Random()}, 3, 'w'
+        );
+        lights.push_back(tmp);
+    }
 
-    democell* zero = new democell(0, 0);
-    zero->IsStem = true;
-
-    std::vector<lightspot> lights;
-    lights.push_back(lightspot(10, 10));
-
-    std::vector<mineralspot> minerals;
-    minerals.push_back(mineralspot(10, -10));
+    rootcell* zero = new rootcell({0, 0});
 
     // game cycle
-
+    
     while (window.isOpen())
     {
         sf::Time elapsed = clock.restart();
@@ -119,12 +118,8 @@ int main()
             timeSinceLastUpdate -= TimePerTick;
             //process_tree(zero);
             
-            scale *= 0.995;
-            
-            zero->x += 0.001 * TimePerTick.asMilliseconds();
-            
-            if ( zero->x * scale >= window.getSize().x/2 )
-                zero->x = 0;
+            TickNumber += 1;
+            std::cout << "tick " << TickNumber << std::endl;
         }
 
         // display
@@ -132,14 +127,14 @@ int main()
         window.clear(sf::Color(3, 16, 25));
         drawGrid(&window, scale);
         
-        for (unsigned int i=0; i<minerals.size(); i++) {
-            minerals[i].display(&window);
+        for (unsigned int i=0; i<lakes.size(); i++) {
+            lakes[i]->display(&window, scale);
         }
 
-        display_tree(&window, zero, scale);
+        // display_tree(&window, zero, scale);
 
         for (unsigned int i=0; i<lights.size(); i++) {
-            lights[i].display(&window);
+            lights[i]->display(&window, scale);
         }
 
         window.display();
@@ -148,4 +143,3 @@ int main()
     std::cout << "Exit (success)" << std::endl;
     return 0;
 }
-*/

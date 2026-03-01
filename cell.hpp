@@ -1,9 +1,11 @@
 #ifndef _CELL_H_
 #define _CELL_H_
 
+#include <chrono>
+#include <random>
 #include <vector>
 
-const unsigned  MAX_CHILDREN = 5;
+float Random();
 
 class cell;
 
@@ -20,14 +22,13 @@ struct DATA {
 	std::vector<cell*> children;
 };
 
-enum CellType {
-	CELL_ZERO,
-	CELL_STEM,
-	CELL_PRODUCER
-};
+// enum CellType {
+// 	CELL_ZERO,
+// 	CELL_STEM,
+// 	CELL_PRODUCER
+// };
 
 class cell {
-
 protected:
 	bool alive;
 	Coords coords;
@@ -38,7 +39,7 @@ protected:
 public:
 	cell(Coords coords, cell* parent);
 	virtual ~cell();
-	void tick();
+	virtual void tick() = 0;
 	void die();
 	DATA getData();
 	// cell* getParent(); //������� ������������ ������
@@ -49,7 +50,6 @@ public:
 	// virtual void produce() = 0;
 	// bool createChild(float child_x, float child_y, CellType type);
 	// bool isPositionValid(float new_x, float new_y);
-
 };
 
 #endif
