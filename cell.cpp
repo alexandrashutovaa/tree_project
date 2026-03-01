@@ -4,13 +4,23 @@
 #include <chrono>
 #include <random>
 #include <vector>
+#include <SFML/Graphics.hpp>
 
 float Random() {
 	std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<int> distrib(0, 2000);
     return 0.001*(distrib(gen)-1000);
-}
+};
+
+Coords DisplayCoordinates(Coords coords, sf::RenderWindow* window, float scale) {
+	Coords disp;
+    disp.x = window->getSize().x / 2;
+    disp.y = window->getSize().y / 2;
+    disp.x += scale * coords.x;
+    disp.y += scale * coords.y;
+	return disp;
+};
 
 cell::cell(Coords coords_, cell* parent_) { //�����������, ��� ��� ������
     alive = true;
@@ -37,6 +47,39 @@ DATA cell::getData() {
     data.root = this->root;
     data.children = this->children;
     return data;
+}
+
+void cell::display_tree(sf::RenderWindow* window, float scale) {
+
+    sf::CircleShape circle(10.f);
+    circle.setFillColor(sf::Color::Red);
+    circle.setOutlineColor(sf::Color::Black);
+    circle.setOutlineThickness(1.f);
+
+    Coords dispCoords = DisplayCoordinates(this->getData().coords, window, scale);
+
+    circle.setPosition(dispCoords.x - 10, dispCoords.y - 10);
+    window->draw(circle);
+
+    for (unsigned int i=0; i < this->children.size(); i++) {
+
+        Coords dispCoords2 = DisplayCoordinates(children[i]->getData().coords, window, scale);
+
+        sf::Vertex line[] =
+        {
+            sf::Vertex(sf::Vector2f(dispCoords.x, dispCoords.y)), // Start point (x1, y1)
+            sf::Vertex(sf::Vector2f(dispCoords2.x, dispCoords2.y))  // End point (x2, y2)
+        };
+
+        line[0].color = sf::Color::Red;
+        line[1].color = sf::Color::Red;
+
+        window->draw(line, 2, sf::Lines);
+    }
+
+    for (unsigned int i=0; i < this->children.size(); i++) {
+        children[i]->display_tree(window, scale);
+    }
 }
 
 /*

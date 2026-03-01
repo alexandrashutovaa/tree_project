@@ -55,14 +55,9 @@ void POI::display(sf::RenderWindow* window, float scale) {
     circle.setOutlineColor(sf::Color::White);
     circle.setOutlineThickness(1.f);
 
-    float disp_x, disp_y;
-    disp_x = window->getSize().x / 2;
-    disp_y = window->getSize().y / 2;
-    disp_x += scale * this->getCoords().x;
-    disp_y += scale * this->getCoords().y;
+    Coords dispCoords = DisplayCoordinates(this->getCoords(), window, scale);
 
-    circle.setPosition(disp_x - RadiusInPixels, disp_y - RadiusInPixels);
-    
+    circle.setPosition(dispCoords.x - RadiusInPixels, dispCoords.y - RadiusInPixels);
     window->draw(circle);
 }
 

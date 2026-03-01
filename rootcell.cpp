@@ -11,15 +11,18 @@ rootcell::rootcell(Coords coords) : cell(coords, nullptr) {
 rootcell::~rootcell() { }
 
 void rootcell::tick() {
-    if ( this->alive )
-        return;
+    if ( this->alive ) {
+        if ( Random() >= 0.8 )
+            spread();
+        // energy += 0.1;
+        // water += 0.1;
+        energy += children.size();
+        water += children.size();
+    }
     
-    energy += 0.1;
-    water += 0.1;
-
-    if ( Random() >= 0.8 )
-        spread();
-    
+    for (unsigned int i=0; i < this->children.size(); i++)
+        children[i]->tick();
+        
     // <- ��� �������� tick � ���� �����
 }
 
@@ -31,17 +34,24 @@ void rootcell::spread() {
         return;
 
     cell* child;
-    float dx = 2*Random();
-    float dy = 2*Random();
+    float dx = Random();
+    float dy = Random();
     float len = std::sqrt(dx*dx + dy*dy);
     dx /= len;
     dy /= len;
+    dx *= 2;
+    dy *= 2;
 
     child = new stem({0 + dx, 0 + dy}, this);
 
     // if (!child) return false; //���� ������� ������ �� ����������. ���� �� ���� �����-�� ����������. � ��� � �� ��������� �������� �������
 
     children.push_back(child);
+}
+
+Coords rootcell::getEWquantity() {
+    Coords EW = {this->energy, this->water};
+    return EW;
 }
 
 bool rootcell::SpendRequest(float neededE, float neededW) {

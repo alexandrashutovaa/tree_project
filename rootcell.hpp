@@ -17,6 +17,7 @@ public:
     void tick();
     void spread();
     
+    Coords getEWquantity(); // костыль, переделать нормально
     bool SpendRequest(float neededE, float neededW);
     void getResource(char type, float amount);
     

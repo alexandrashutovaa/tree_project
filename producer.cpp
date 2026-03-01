@@ -28,11 +28,11 @@ void producer::produce() {
 */
 
 void producer::tick() {
-    for (unsigned int i=0; i < this->children.size(); i++)
-        children[i]->tick();
-
     if ( this->alive )
         produce();
+
+    for (unsigned int i=0; i < this->children.size(); i++)
+        children[i]->tick();
 }
 
 void producer::produce() {

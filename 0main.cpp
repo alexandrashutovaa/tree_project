@@ -65,27 +65,29 @@ int main()
 
     // sf::Font font;
     // if (!font.loadFromFile("arialmt.ttf"))
-    //     return EXIT_FAILURE;
+    //     return -1;
     // sf::Text text;
     // text.setFont(font);
-    // text.setCharacterSize(50);
+    // text.setCharacterSize(40);
     // text.setFillColor(sf::Color::White);
     // text.setPosition(100.f, 100.f);
 
     float scale = 60; // pixels per length unit
     unsigned int TickNumber = 0;
+    float maxX, maxY, ratio;
+
+    std::vector<POI*> lakes;
+    for ( unsigned int i=0; i<10; i++ ) {
+        POI* tmp = new POI(
+            {20*Random(), 20*Random()}, 3, 'w'
+        );
+        lakes.push_back(tmp);
+    }
 
     std::vector<POI*> lights;
     for ( unsigned int i=0; i<10; i++ ) {
         POI* tmp = new POI(
-            {10*Random(), 10*Random()}, 2, 'e'
-        );
-        lights.push_back(tmp);
-    }
-    std::vector<POI*> lakes;
-    for ( unsigned int i=0; i<10; i++ ) {
-        POI* tmp = new POI(
-            {10*Random(), 10*Random()}, 3, 'w'
+            {30*Random(), 30*Random()}, 2, 'e'
         );
         lights.push_back(tmp);
     }
@@ -116,12 +118,38 @@ int main()
 
         while (timeSinceLastUpdate > TimePerTick) {
             timeSinceLastUpdate -= TimePerTick;
-            //process_tree(zero);
-            
+
             TickNumber += 1;
             std::cout << "tick " << TickNumber << std::endl;
+            zero->tick();
+
+            // if ( abs(this->getData().coords.x) > maxX )
+            //     maxX = abs(this->getData().coords.x);
+            
+            // if ( abs(this->getData().coords.y) > maxY )
+            //     maxY = abs(this->getData().coords.y);
+            
+            maxX = maxY = 0;
+
+            // find most distant cells, gradually change scale
+
+            maxX += 1;
+            maxY += 1;
+            
+            // text.setString(
+            //     "E: " + std::to_string(zero->getEWquantity().x) + "\n"
+            //     + "W: " + std::to_string(zero->getEWquantity().y)
+            // );
         }
 
+        // ratio = 2*maxX*scale / window.getSize().x;
+        // if ( 2*maxY*scale / window.getSize().y > ratio )
+        //     ratio = 2*maxY*scale / window.getSize().y;
+        // if ( ratio < 1 )
+        //     ratio = 1;
+        
+        // scale *= 1 + ratio/10;
+        
         // display
 
         window.clear(sf::Color(3, 16, 25));
@@ -131,11 +159,13 @@ int main()
             lakes[i]->display(&window, scale);
         }
 
-        // display_tree(&window, zero, scale);
+        zero->display_tree(&window, scale);
 
         for (unsigned int i=0; i<lights.size(); i++) {
             lights[i]->display(&window, scale);
         }
+
+        // window.draw(text);
 
         window.display();
     }

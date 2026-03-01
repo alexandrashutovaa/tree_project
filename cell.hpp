@@ -4,8 +4,7 @@
 #include <chrono>
 #include <random>
 #include <vector>
-
-float Random();
+#include <SFML/Graphics.hpp>
 
 class cell;
 
@@ -21,6 +20,10 @@ struct DATA {
 	cell* root;
 	std::vector<cell*> children;
 };
+
+float Random();
+
+Coords DisplayCoordinates(Coords coords, sf::RenderWindow* window, float scale);
 
 // enum CellType {
 // 	CELL_ZERO,
@@ -42,14 +45,9 @@ public:
 	virtual void tick() = 0;
 	void die();
 	DATA getData();
-	// cell* getParent(); //������� ������������ ������
-	// cell* getRoot(); //������� zero
 
-// protected:
-	// virtual void grow() = 0;
-	// virtual void produce() = 0;
-	// bool createChild(float child_x, float child_y, CellType type);
-	// bool isPositionValid(float new_x, float new_y);
+	// SFML
+    void display_tree(sf::RenderWindow* window, float scale);
 };
 
 #endif
