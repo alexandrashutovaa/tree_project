@@ -2,7 +2,9 @@
 #include "cell.hpp"
 #include "POI.hpp"
 
-producer::producer(Coords coords, cell* parent) : cell(coords, parent) { }
+producer::producer(Coords coords, cell* parent) : cell(coords, parent) {
+    this->color = sf::Color(50, 50, 200);
+}
 
 producer::~producer() { }
 

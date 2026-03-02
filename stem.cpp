@@ -1,10 +1,13 @@
-#include "stem.hpp"
 #include "cell.hpp"
+#include "stem.hpp"
+#include "producer.hpp"
 #include "rootcell.hpp"
 
 #include <iostream>
 
-stem::stem(Coords coords, cell* parent) : cell(coords, parent) { }
+stem::stem(Coords coords, cell* parent) : cell(coords, parent) {
+    this->color = sf::Color(200, 50, 50);
+}
 
 stem::~stem() { }
 
@@ -22,7 +25,7 @@ void stem::spread() {
     if (children.size() >= 3)
         return;
 
-    if ( Random() > 0.8 )
+    if ( Random() > 0.7 )
         return;
 
     rootcell* rootptr = (rootcell*)(this->getData().root);
@@ -36,14 +39,17 @@ void stem::spread() {
     dx = Random();
     dy = Random();
     float len = std::sqrt(dx*dx + dy*dy);
-    dx /= len; dx += 0.5*Random();
-    dy /= len; dy += 0.5*Random();
+    dx /= len; dx *= 2; dx += Random();
+    dy /= len; dy *= 2; dy += Random();
     
     len = std::sqrt(this->getData().coords.x * this->getData().coords.x + this->getData().coords.y * this->getData().coords.y);
-    dx += 2*this->getData().coords.x / len;
-    dy += 2*this->getData().coords.y / len;
+    dx += 4*this->getData().coords.x / len;
+    dy += 4*this->getData().coords.y / len;
 
-    child = new stem({this->getData().coords.x + dx, this->getData().coords.y + dy}, this);
+    if ( Random() > -0.5 )
+        child = new stem({this->getData().coords.x + dx, this->getData().coords.y + dy}, this);
+    else
+        child = new producer({this->getData().coords.x + dx, this->getData().coords.y + dy}, this);
 
     // if (!child) return false; //���� ������� ������ �� ����������. ���� �� ���� �����-�� ����������. � ��� � �� ��������� �������� �������
 

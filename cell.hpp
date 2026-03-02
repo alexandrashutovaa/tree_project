@@ -39,6 +39,8 @@ protected:
 	cell* root;
 	std::vector<cell*> children;
 
+	sf::Color color;
+
 public:
 	cell(Coords coords, cell* parent);
 	virtual ~cell();
@@ -46,12 +48,11 @@ public:
 	void die();
 	DATA getData();
 
+	void IsPositionValid(Coords xy);
 	Coords maxCoords();
 
 	// SFML
     void display_tree(sf::RenderWindow* window, float scale);
 };
-
-extern float maxX, maxY;
 
 #endif

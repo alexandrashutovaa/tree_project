@@ -56,21 +56,22 @@ int main()
     window.setFramerateLimit(60);
 
     sf::Image icon;
-    if ( icon.loadFromFile("icon.png") )
-        window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    if ( ! icon.loadFromFile("icon.png") )
+        return -1;
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     const sf::Time TimePerTick = sf::seconds(1.f / 10.f); // 1 second / X ticks
 
-    // sf::Font font;
-    // if (!font.loadFromFile("arialmt.ttf"))
-    //     return -1;
-    // sf::Text text;
-    // text.setFont(font);
-    // text.setCharacterSize(40);
-    // text.setFillColor(sf::Color::White);
-    // text.setPosition(100.f, 100.f);
+    sf::Font font;
+    if (!font.loadFromFile("arialmt.ttf"))
+        return -1;
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(40);
+    text.setFillColor(sf::Color::White);
+    text.setPosition(20.f, 20.f);
 
     float scale = 60; // pixels per length unit
     unsigned int TickNumber = 0;
@@ -81,9 +82,10 @@ int main()
     std::vector<POI*> lakes;
     for ( unsigned int i=0; i<10; i++ ) {
         POI* tmp = new POI(
-            {20*Random(), 20*Random()}, 3, 'w'
+            {30*Random(), 30*Random()}, 3, 'w'
         );
-        lakes.push_back(tmp);
+        if ( ! (-5 < tmp->getCoords().x && tmp->getCoords().x < 5 && -5 < tmp->getCoords().y && tmp->getCoords().y < 5) )
+            lakes.push_back(tmp);
     }
 
     std::vector<POI*> lights;
@@ -91,7 +93,8 @@ int main()
         POI* tmp = new POI(
             {30*Random(), 30*Random()}, 2, 'e'
         );
-        lights.push_back(tmp);
+        if ( ! (-5 < tmp->getCoords().x && tmp->getCoords().x < 5 && -5 < tmp->getCoords().y && tmp->getCoords().y < 5) )
+            lights.push_back(tmp);
     }
 
     rootcell* zero = new rootcell({0, 0});
@@ -122,7 +125,7 @@ int main()
             timeSinceLastUpdate -= TimePerTick;
 
             TickNumber += 1;
-            std::cout << "tick " << TickNumber << std::endl;
+            // std::cout << "tick " << TickNumber << std::endl;
             zero->tick();
 
             // find most distant cells, gradually change scale
@@ -131,16 +134,17 @@ int main()
             maxX = maxCoords.x;
             maxY = maxCoords.y;
             
-            // text.setString(
-            //     "E: " + std::to_string(zero->getEWquantity().x) + "\n"
-            //     + "W: " + std::to_string(zero->getEWquantity().y)
-            // );
+            text.setString(
+                std::to_string(1000/TimePerTick.asMilliseconds()) + " TPS\ttick: " + std::to_string(TickNumber) + "\n"
+                + "E: " + std::to_string(zero->getEWquantity().x) + "\n"
+                + "W: " + std::to_string(zero->getEWquantity().y) + "\n"
+            );
         }
         
-        ratio = 2*(maxX+3)*scale / window.getSize().x;
+        ratio = 2*(maxX+2)*scale / window.getSize().x;
         // std::cout << ratio << std::endl;
-        if ( 2*(maxY+3)*60 / window.getSize().y > ratio )
-            ratio = 2*(maxY+3)*scale / window.getSize().y;
+        if ( 2*(maxY+2)*scale / window.getSize().y > ratio )
+            ratio = 2*(maxY+2)*scale / window.getSize().y;
         // std::cout << ratio << std::endl;
         scale *= (51 - ratio) / 50 ;
         
@@ -159,8 +163,7 @@ int main()
             lights[i]->display(&window, scale);
         }
 
-        // window.draw(text);
-
+        window.draw(text);
         window.display();
     }
     

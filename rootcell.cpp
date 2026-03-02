@@ -4,6 +4,7 @@
 #include <iostream>
 
 rootcell::rootcell(Coords coords) : cell(coords, nullptr) {
+    this->color = sf::Color(50, 200, 50);
     energy = 10;
     water = 10;
 }
@@ -13,10 +14,10 @@ rootcell::~rootcell() { }
 void rootcell::tick() {
     if ( this->alive ) {
         spread();
-        // energy += 0.1;
-        // water += 0.1;
-        energy += 5;
-        water += 5;
+        energy += 4;
+        water += 4;
+        // energy += 50;
+        // water += 50;
     }
     
     for (unsigned int i=0; i < this->children.size(); i++)
@@ -26,7 +27,7 @@ void rootcell::tick() {
 }
 
 void rootcell::spread() {
-    if (children.size() >= 4)
+    if (children.size() >= 5)
         return;
 
     if ( !SpendRequest(5, 5) )
@@ -38,8 +39,8 @@ void rootcell::spread() {
     float len = std::sqrt(dx*dx + dy*dy);
     dx /= len;
     dy /= len;
-    dx *= 2;
-    dy *= 2;
+    dx *= 4;
+    dy *= 4;
 
     child = new stem({0 + dx, 0 + dy}, this);
 

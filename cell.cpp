@@ -37,6 +37,7 @@ cell::~cell() { } //����������
 
 void cell::die() {
     alive = false;
+    this->color = sf::Color(30, 30, 30);
 }
 
 DATA cell::getData() {
@@ -52,14 +53,11 @@ DATA cell::getData() {
 void cell::display_tree(sf::RenderWindow* window, float scale) {
 
     sf::CircleShape circle(6.f);
-    circle.setFillColor(sf::Color::Red);
-    circle.setOutlineColor(sf::Color::Black);
+    circle.setFillColor(this->color);
+    circle.setOutlineColor(sf::Color::White);
     circle.setOutlineThickness(1.f);
 
     Coords dispCoords = DisplayCoordinates(this->getData().coords, window, scale);
-
-    circle.setPosition(dispCoords.x - 6, dispCoords.y - 6);
-    window->draw(circle);
 
     for (unsigned int i=0; i < this->children.size(); i++) {
 
@@ -71,11 +69,14 @@ void cell::display_tree(sf::RenderWindow* window, float scale) {
             sf::Vertex(sf::Vector2f(dispCoords2.x, dispCoords2.y))  // End point (x2, y2)
         };
 
-        line[0].color = sf::Color::Red;
-        line[1].color = sf::Color::Red;
+        line[0].color = sf::Color::White;
+        line[1].color = sf::Color::White;
 
         window->draw(line, 2, sf::Lines);
     }
+
+    circle.setPosition(dispCoords.x - 6, dispCoords.y - 6);
+    window->draw(circle);
 
     for (unsigned int i=0; i < this->children.size(); i++) {
         children[i]->display_tree(window, scale);
