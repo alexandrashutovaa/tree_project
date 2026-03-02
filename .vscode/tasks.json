@@ -1,0 +1,84 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "Default + SFML g++.exe build active file",
+			"command": "C:\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"*.cpp",
+				"-D",
+                "SFML_STATIC",
+				"-I",
+                "C:/libraries/SFML-2.6.2/include",
+                "-L",
+                "C:/libraries/SFML-2.6.2/lib",
+                "-l",
+				"sfml-graphics-s",
+                "-l",
+				"sfml-window-s",
+                "-l",
+				"sfml-system-s",
+				"-l",
+				"opengl32",
+				"-l",
+				"freetype",
+				"-l",
+				"gdi32",
+				"-l",
+				"ogg",
+				"-l",
+				"ws2_32",
+				"-l",
+				"flac",
+				"-l",
+				"vorbisenc",
+				"-l",
+				"vorbis",
+				"-l",
+				"vorbisfile",
+				"-l",
+				"winmm",
+				"-o",
+				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+                "kind": "build",
+				"isDefault": true
+            },
+			"detail": "Default one + SFML"
+		},
+
+		{
+            "type": "cppbuild",
+            "label": "Default g++.exe build active file",
+            "command": "C:\\mingw64\\bin\\g++.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "C:\\mingw64\\bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "detail": "Default one"
+		}
+	]
+}

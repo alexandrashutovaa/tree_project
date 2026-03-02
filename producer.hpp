@@ -1,17 +1,14 @@
 #ifndef _PRODUCER_H_
 #define _PRODUCER_H_
-#include "cell.h"
+
+#include "cell.hpp"
 
 class producer : public cell {
 public:
-    producer(float x, float y, cell* parent);
-    virtual ~producer();
-
+    producer(Coords coords, cell* parent);
+    ~producer();
     void tick();
-
-protected:
     void produce();
-    void grow();
 };
 
 #endif
