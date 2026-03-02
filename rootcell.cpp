@@ -12,12 +12,11 @@ rootcell::~rootcell() { }
 
 void rootcell::tick() {
     if ( this->alive ) {
-        if ( Random() >= 0.8 )
-            spread();
+        spread();
         // energy += 0.1;
         // water += 0.1;
-        energy += children.size();
-        water += children.size();
+        energy += 5;
+        water += 5;
     }
     
     for (unsigned int i=0; i < this->children.size(); i++)

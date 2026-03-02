@@ -46,8 +46,12 @@ public:
 	void die();
 	DATA getData();
 
+	Coords maxCoords();
+
 	// SFML
     void display_tree(sf::RenderWindow* window, float scale);
 };
+
+extern float maxX, maxY;
 
 #endif

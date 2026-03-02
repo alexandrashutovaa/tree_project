@@ -74,7 +74,9 @@ int main()
 
     float scale = 60; // pixels per length unit
     unsigned int TickNumber = 0;
-    float maxX, maxY, ratio;
+    float maxX = 0;
+    float maxY = 0;
+    float ratio;
 
     std::vector<POI*> lakes;
     for ( unsigned int i=0; i<10; i++ ) {
@@ -123,32 +125,24 @@ int main()
             std::cout << "tick " << TickNumber << std::endl;
             zero->tick();
 
-            // if ( abs(this->getData().coords.x) > maxX )
-            //     maxX = abs(this->getData().coords.x);
-            
-            // if ( abs(this->getData().coords.y) > maxY )
-            //     maxY = abs(this->getData().coords.y);
-            
-            maxX = maxY = 0;
-
             // find most distant cells, gradually change scale
 
-            maxX += 1;
-            maxY += 1;
+            Coords maxCoords = zero->maxCoords();
+            maxX = maxCoords.x;
+            maxY = maxCoords.y;
             
             // text.setString(
             //     "E: " + std::to_string(zero->getEWquantity().x) + "\n"
             //     + "W: " + std::to_string(zero->getEWquantity().y)
             // );
         }
-
-        // ratio = 2*maxX*scale / window.getSize().x;
-        // if ( 2*maxY*scale / window.getSize().y > ratio )
-        //     ratio = 2*maxY*scale / window.getSize().y;
-        // if ( ratio < 1 )
-        //     ratio = 1;
         
-        // scale *= 1 + ratio/10;
+        ratio = 2*(maxX+3)*scale / window.getSize().x;
+        // std::cout << ratio << std::endl;
+        if ( 2*(maxY+3)*60 / window.getSize().y > ratio )
+            ratio = 2*(maxY+3)*scale / window.getSize().y;
+        // std::cout << ratio << std::endl;
+        scale *= (51 - ratio) / 50 ;
         
         // display
 

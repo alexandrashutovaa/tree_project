@@ -31,7 +31,7 @@ cell::cell(Coords coords_, cell* parent_) { //�����������,
         root = parent->getData().root;
     else
         root = this;
-}
+    }
 
 cell::~cell() { } //����������
 
@@ -51,14 +51,14 @@ DATA cell::getData() {
 
 void cell::display_tree(sf::RenderWindow* window, float scale) {
 
-    sf::CircleShape circle(10.f);
+    sf::CircleShape circle(6.f);
     circle.setFillColor(sf::Color::Red);
     circle.setOutlineColor(sf::Color::Black);
     circle.setOutlineThickness(1.f);
 
     Coords dispCoords = DisplayCoordinates(this->getData().coords, window, scale);
 
-    circle.setPosition(dispCoords.x - 10, dispCoords.y - 10);
+    circle.setPosition(dispCoords.x - 6, dispCoords.y - 6);
     window->draw(circle);
 
     for (unsigned int i=0; i < this->children.size(); i++) {
@@ -80,6 +80,22 @@ void cell::display_tree(sf::RenderWindow* window, float scale) {
     for (unsigned int i=0; i < this->children.size(); i++) {
         children[i]->display_tree(window, scale);
     }
+}
+
+Coords cell::maxCoords() {
+    Coords maxcoords = {
+        this->getData().coords.x * ( 2*(this->getData().coords.x > 0)-1 ),
+        this->getData().coords.y * ( 2*(this->getData().coords.y > 0)-1 )
+    };
+
+    for ( unsigned int i=0; i<children.size(); i++ ) {
+        Coords maxChildCoords = children[i]->maxCoords();
+        if ( maxChildCoords.x > maxcoords.x )
+            maxcoords.x = maxChildCoords.x;
+        if ( maxChildCoords.y > maxcoords.y )
+            maxcoords.y = maxChildCoords.y;
+    }
+    return maxcoords;
 }
 
 /*
